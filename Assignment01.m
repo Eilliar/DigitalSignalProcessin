@@ -7,9 +7,9 @@ close all
 clc
 
 %% Variables
-fa = 25e3;                          % Hz
-Ta = 1/fa;                          % 1/Hz
-n = 10000;                          % number of sampes
+fa = 25e3;                          % Sampling frequency (Hz)
+Ta = 1/fa;                          % Sampling period (1/Hz)
+n = 10000;                          % Number of sampes
 t = (0 : Ta : n*Ta - Ta);           % Time vector
 
 %% Sinewaves
@@ -22,8 +22,10 @@ sin1k2 = 0.5*sin(2*pi*1200*t);
 % 5000 Hz
 sin5k = 0.5*sin(2*pi*5000*t);
 
+% sum of all sinewaves
+sum_sin = sin100 + sin1k2 + sin5k;
 %% Plot
-figure(1);
+figure;
 subplot(3,1,1);
 plot(t, sin100);
 title('Sinewave 100 Hz');
@@ -37,7 +39,7 @@ plot(t, sin5k, 'm');
 title('Sinewave 5000 Hz');
 xlabel('time (s)');
 
-figure(2);
+figure;
 plot(t, sin100+sin1k2+sin5k);
 title('Sum of all sinewaves');
 xlabel('time (s)');
