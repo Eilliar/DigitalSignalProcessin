@@ -1,4 +1,4 @@
-%% Digital Signal Processing - Federal Institute of SÃ£o Paulo
+%% Digital Signal Processing - Federal Institute of São Paulo
 % Author: Bruno Godoi Eilliar
 % Notes:
 
@@ -10,19 +10,29 @@
 % * sum_sin - sum of all sinewave
 Assignment01;
 
-%% Perofmt My DFT
+%% Perform My DFT
+% Like the matlab FFT, it will return a complex vector. The absolute plot will be
+% symetric.
+DFT_SIN = my_dft(sum_sin);
+DFT_P1 = abs(DFT_SIN(1:length(DFT_SIN)/2 + 1));
 
+% Frequency vector
+f = fa*(0:(n/2))/n;
+
+figure;
+plot(f, DFT_P1);
+title('My DFT');
+xlabel('Frequency (Hz)');
+ylabel('|DFT(x)|');
 %% Perform Matlab FFT
 
-f = fa*(0:(n/2))/n;                 % frequency vector
 FFT_SIN = fft(sum_sin);
 P2 = abs(FFT_SIN/n);
 P1 = P2(1:n/2 + 1);                 % first half of power spectrum
-P1(2:end-1) = 2*P1(2:end-1);
 
 %% Plot Matlab FFT
 figure;
 plot(f, P1);
 title('Single-Sided Amplitude Spectrum of X(t)')
 xlabel('f (Hz)')
-ylabel('|P1(f)|')
+ylabel('|FFT(x)|')
