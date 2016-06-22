@@ -7,7 +7,7 @@ close all
 clc
 
 %% Variables
-fa = 25e3;                          % Sampling frequency (Hz)
+fa = 30000;                          % Sampling frequency (Hz)
 Ta = 1/fa;                          % Sampling period (1/Hz)
 n = 10000;                          % Number of sampes
 t = (0 : Ta : n*Ta - Ta);           % Time vector
