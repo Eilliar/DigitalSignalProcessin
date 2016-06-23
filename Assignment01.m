@@ -1,5 +1,6 @@
 %% Digital Signal Processing - Federal Institute of São Paulo
 % Author: Bruno Godoi Eilliar
+% Signal Generation Assignment
 % Notes:
 
 clear all

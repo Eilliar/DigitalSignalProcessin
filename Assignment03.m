@@ -1,7 +1,8 @@
 %% Digital Signal Processing - Federal Institute of São Paulo
 % Author: Bruno Godoi Eilliar
+% DFT and FFT Assignment
 % Notes:
-
+% - my_dft function is my version of DFT
 %% Build the signal
 % Signals:
 % * sin100 - 100 Hz sinewave

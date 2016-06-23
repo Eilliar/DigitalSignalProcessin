@@ -1,5 +1,6 @@
 %% Digital Signal Processing - Federal Institute of São Paulo
 % Author: Bruno Godoi Eilliar
+% Digital Filter Design Assignment
 % Notes:
 
 %% Build the signal
@@ -29,16 +30,26 @@ fvtool(b, a);
 % Chebyshev Type II
 % Compute the minimum filter order n
 [n2, Wn2] = cheb2ord(Wp, Ws, Rp, Rs);
-[b2, a2] = cheby2(n2,Rp,Wn2, filtertype);
+[b2, a2] = cheby2(n2,Rs,Wn2);
 
 
 %% PLot
 filtered_signal_1 = filter(b, a, sum_sin);
 filtered_signal_2 = filter(b2, a2, sum_sin);
+
 figure();
-subplot(3,1,1);
-plot(sum_sin);
-subplot(3,1,2);
-plot(filtered_signal_1);
-subplot(3,1,3);
-plot(filtered_signal_2);
+subplot(3,1,1); grid on;
+plot(t, sum_sin);
+ylim([-5 5]);
+title('Signal');
+
+subplot(3,1,2); grid on;
+plot(t, filtered_signal_1, 'r');
+ylim([-5 5]);
+title('Chebyshev Type I - Low Pass Filter');
+
+subplot(3,1,3); grid on;
+plot(t, filtered_signal_2, 'm');
+ylim([-5 5]);
+title('Chebyshev Type II - Low Pass Filter');
+xlabel('Time (s)');
