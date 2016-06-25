@@ -10,6 +10,7 @@ clc
 %% Loab/Build Signal
 filename = 'meu_mono_A.wav';
 [x, Fs] = audioread(filename);
+x = x(end/8:end/4);
 % Get Sample Period
 % for fs = 44100 samples/s -> Ts = 1/44100 s
 Ts = 1/Fs;
@@ -26,7 +27,7 @@ pause;
 %% LPC
 disp('Proceeding to LPC Vocoder Algorithm');
 % A is the coefficients of the LPC filter H(z)
-A = lpc(x, 500);
+A = lpc(x, 5);
 
 % Build H(z)
 DEN = A;
@@ -41,7 +42,6 @@ figure()
 W_norm = W*Fs/(2*pi);
 plot(W_norm,abs(H)); grid on;
 title('H(z) - Frequency response');
-% Peak at 947.5 Hz
 
 % Check frequency response of the digital filter H_inv(z)
 [H_i, W_i] = freqz(DEN, [1]);
@@ -51,25 +51,40 @@ plot(W_norm,abs(H_i)); grid on;
 title('H_inv(z) - Frequency response');
 
 %% Vocoder
-pulse_train = filter(DEN,1, x);
+inverse_signal = filter(1, A, x);
 figure()
-plot(pulse_train);
+plot(inverse_signal(1:end/8));
+title('inverse signal');
 
-% Time Vector
-% t = 0:Ts: length(x(5000:10000)-1);
-% pulse_train = lsim(H_inv, x(5000:10000-1), t);
+% Use My DFT to find the frequency of inverse_signal
+n = length(inverse_signal);
+FFT_SIN = fft(inverse_signal);
+P2 = abs(FFT_SIN/n);
+P1 = P2(1:n/2 + 1);                 % first half of power spectrum
 
-%% 
-% impulses = zeros(size(x(1:10000)),1);
-% for k = 947: 947: length(impulses)
-%     impulses(k) = 1;
-% end
-% 
-% %X_sim = filter([1 DEN], NUM,impulses);
-% t = 0:1/947: length(impulses)-1;
-% pulse_train = lsim(H_inv, impulse, t);
-% figure()
-% subplot(2,1,1)
-% plot(impulses)
-% subplot(2,1,2)
-% plot(X_sim)
+% Frequency vector
+f = Fs*(0:(n/2))/n;
+
+figure;
+plot(f, P1);
+title('My DFT');
+xlabel('Frequency (Hz)');
+ylabel('|DFT(x)|');
+
+%% Impulse train
+f = 794; %frequency of the impulse in Hz
+fs = f*10;
+t = 0:1/fs:length(x); % time vector
+y=zeros(size(t));
+y(1:fs/f:end)=1;
+figure();
+plot(t(1:500),y(1:500));
+
+%% Reconstruction
+
+rec = filter(1,A, y);
+figure()
+subplot(2,1,1);
+plot(t(1:5000), rec(1:5000));
+subplot(2,1,2);
+plot(x(1:5000));
